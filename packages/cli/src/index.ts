@@ -6,6 +6,7 @@
 
 import { Command } from 'commander';
 import { StreamEvent, ModelConfig } from '@ai-cli/shared';
+import { AIServer } from '@ai-cli/server';
 import { ServerClient, CLICommand } from './client';
 import { readConfig, writeConfig, getConfigPath } from './config-store';
 
@@ -19,7 +20,7 @@ const VERSION = '1.0.0';
 function getBanner(): string {
   return `
 ${chalk.bold.cyan('╔══════════════════════════════════════════╗')}
-${chalk.bold.cyan('║')}${chalk.bold.white('      AI CLI Assistant v${VERSION}              ')}${chalk.bold.cyan('║')}
+${chalk.bold.cyan('║')}${chalk.bold.white(`      AI CLI Assistant v${VERSION}              `)}${chalk.bold.cyan('║')}
 ${chalk.bold.cyan('║')}${chalk.dim('  纯终端交互式 AI 编程助手                   ')}${chalk.bold.cyan('║')}
 ${chalk.bold.cyan('║')}${chalk.dim('  代码生成 / 重构 / Bug 排查                  ')}${chalk.bold.cyan('║')}
 ${chalk.bold.cyan('║')}${chalk.dim('  MCP 协议 · 文件 · Git · 终端                ')}${chalk.bold.cyan('║')}
@@ -75,8 +76,6 @@ async function startServer(config: ModelConfig): Promise<string> {
   const spinner = ora('启动 AI 服务器...').start();
 
   try {
-    const { AIServer } = await import('@ai-cli/server');
-
     const serverConfig = {
       model: config,
       port: DEFAULT_PORT,

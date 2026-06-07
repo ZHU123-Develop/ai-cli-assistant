@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
+    "build": "npm run build -w @ai-cli/shared && npm run build -w @ai-cli/tools && npm run build -w @ai-cli/server && npm run build -w @ai-cli/cli",
     "dev": "npm run dev --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",

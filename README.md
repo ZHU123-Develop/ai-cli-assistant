@@ -12,6 +12,7 @@
 ai-cli-assistant/
 ├── .ai-cli.json          # 项目配置文件（含 API Key，已加入 .gitignore）
 ├── package.json          # npm workspace 根配置
+├── start.bat             # Windows 一键启动
 ├── README.md
 └── packages/
     ├── shared/           # 共享类型定义 (Message, StreamEvent, ModelConfig...)
@@ -26,6 +27,7 @@ ai-cli-assistant/
 |------|------|
 | 语言 | TypeScript 5.7 |
 | 包管理 | npm workspace |
+| 打包 | tsup (CLI) / tsc (其他) |
 | CLI 框架 | Commander + Inquirer + Chalk + Ora |
 | 流式通信 | WebSocket (ws) |
 | AI 对接 | Anthropic SDK / OpenAI SDK |
@@ -35,29 +37,32 @@ ai-cli-assistant/
 
 > **前置要求**：目标电脑需安装 [Node.js](https://nodejs.org)（推荐 LTS 版本）
 
-### Windows 一键启动
+### 方式一：双击启动（推荐）
 
-双击项目根目录的 `start.bat`，自动完成安装、编译、注册命令、启动。
+双击项目根目录的 `start.bat`，自动检测依赖和编译，直接启动。
 
-### 手动安装
-
-#### 1. 安装 & 编译
+### 方式二：命令行启动
 
 ```bash
+# 1. 安装依赖并编译
 npm install
 npm run build
+
+# 2. 全局注册 ai-cli 命令（可选）
+npm link
+# 注册后可以在任何目录直接运行 ai-cli
+
+# 3. 启动
+ai-cli
 ```
 
-### 2. 全局注册命令（可选，推荐）
+### 方式三：手动运行（不注册全局命令）
 
 ```bash
-cd packages/cli
-npm link
+node packages/cli/dist/index.js
 ```
 
-注册后可以在**任何目录**直接运行 `ai-cli`。
-
-### 3. 配置模型
+## 配置模型
 
 在项目根目录创建 `.ai-cli.json`：
 
@@ -74,21 +79,18 @@ npm link
 
 > **安全提醒**：`.ai-cli.json` 包含 API Key，请勿提交到 Git。已加入 `.gitignore`。
 
-### 4. 启动
+也可直接命令行传参启动：
 
 ```bash
-# 方式一：直接启动（自动读取 .ai-cli.json 配置）
-ai-cli
-
-# 方式二：命令行传参（覆盖配置文件）
+# 命令行传参（覆盖配置文件）
 ai-cli --provider custom --model glm-4-flash \
   --key "你的API_KEY" \
   --url "https://open.bigmodel.cn/api/paas/v4"
 
-# 方式三：交互式引导（不传参数，按提示填写）
+# 交互式引导（不传参数，首次运行按提示填写）
 ai-cli
 
-# 方式四：保存到项目配置
+# 保存到项目配置
 ai-cli --provider custom --model glm-4 --key "你的key" \
   --url "https://open.bigmodel.cn/api/paas/v4" --save-project
 ```
