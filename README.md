@@ -37,34 +37,28 @@ ai-cli-assistant/
 
 > **前置要求**：目标电脑需安装 [Node.js](https://nodejs.org)（推荐 LTS 版本）
 
-### 方式一：双击启动（推荐）
-
-双击项目根目录的 `start.bat`，自动检测依赖和编译，直接启动。
-
-### 方式二：命令行启动
+### 第一步：安装
 
 ```bash
-# 1. 安装依赖并编译
+# 从 GitHub 克隆项目
+git clone git@github.com:ZHU123-Develop/ai-cli-assistant.git
+cd ai-cli-assistant
+
+# 安装依赖并编译
 npm install
 npm run build
 
-# 2. 全局注册 ai-cli 命令（可选）
+# 全局注册命令（可选，注册后在任何目录都能直接运行 ai-cli）
 npm link
-# 注册后可以在任何目录直接运行 ai-cli
-
-# 3. 启动
-ai-cli
 ```
 
-### 方式三：手动运行（不注册全局命令）
+### 第二步：配置模型
 
-```bash
-node packages/cli/dist/index.js
-```
+任选一种方式配置你的 AI API：
 
-## 配置模型
+**方式 A：创建配置文件（推荐）**
 
-在项目根目录创建 `.ai-cli.json`：
+在项目目录创建 `.ai-cli.json`：
 
 ```json
 {
@@ -79,20 +73,28 @@ node packages/cli/dist/index.js
 
 > **安全提醒**：`.ai-cli.json` 包含 API Key，请勿提交到 Git。已加入 `.gitignore`。
 
-也可直接命令行传参启动：
+**方式 B：命令行传参**
 
 ```bash
-# 命令行传参（覆盖配置文件）
 ai-cli --provider custom --model glm-4-flash \
   --key "你的API_KEY" \
   --url "https://open.bigmodel.cn/api/paas/v4"
+```
 
-# 交互式引导（不传参数，首次运行按提示填写）
+**方式 C：交互式引导**
+
+直接运行 `ai-cli`，按提示逐步填写即可。
+
+### 第三步：启动
+
+```bash
+# 配置好后直接运行（自动读取 .ai-cli.json）
 ai-cli
 
-# 保存到项目配置
-ai-cli --provider custom --model glm-4 --key "你的key" \
-  --url "https://open.bigmodel.cn/api/paas/v4" --save-project
+# 或在项目目录双击 start.bat（Windows）
+
+# 或不注册全局命令，手动运行
+node packages/cli/dist/index.js
 ```
 
 ## 使用方式
